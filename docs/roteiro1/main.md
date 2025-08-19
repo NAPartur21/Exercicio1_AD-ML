@@ -1,6 +1,6 @@
-## Machine Learning Projeto Arvore Decisão 
+## Objetivo
 
-Esta é a entrega da atividade 1 de machine learning para criação de uma arvore de decisão.
+Aqui vai o objetivo macro do roteiro. Por que estamos fazendo o que estamos fazendo?
 
 ## Montagem do Roteiro
 

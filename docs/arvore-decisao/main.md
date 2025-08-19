@@ -1,7 +1,6 @@
-## Arvore de decisao
-alguma coisa sobre arvore de decisao
-alguma coisa sobre arvore de decisao 2
-seuolyttdgfds .lukjythrfds
+## Exercicio 1 Arvore de decisao 
+Aqui será documentado o exercicio 1 de arvore de decisão
+
 ## Decision Tree
 ```python
 --8<-- "docs/arvore-decisao/decision-tree.py"
