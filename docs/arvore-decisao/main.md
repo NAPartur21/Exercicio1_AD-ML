@@ -1,5 +1,5 @@
 # Exercicio 1 Arvore de decisao 
-Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents) do Kaggle. O objetivo é analisar a base de dados limpá-la, e no final construir um modelo de árvore de decisão
+Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados limpá-la, e no final construir um modelo de árvore de decisão
 
 
 # Etapa 1 - Analise e instalação dos dados
