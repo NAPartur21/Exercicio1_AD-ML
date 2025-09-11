@@ -1,5 +1,5 @@
-# Exercicio 1 Arvore de decisao 
-Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados, limpá-la e no final construir um modelo de árvore de decisão
+# Exercicio 2 KNN 
+Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados, limpá-la e no final construir um modelo KNN
 
 
 # Etapa 1 - Analise e instalação dos dados
@@ -267,57 +267,3 @@ tipo de colisão, tipo de lesão, dia da semana e fator primário foram transfor
     ```
 Todos os registros com valores ausentes foram removidos, garantindo a integridade dos dados para o treinamento do modelo
 
-
-# Etapa 3 
-## Separação em treino e teste
-
-Os dados foram divididos em conjuntos de treino 80% e teste 20% de forma estratificada, preservando a proporção das classes.
-A distribuição das classes foi feita para ambos os conjuntos garantindo que o modelo fosse treinado e avaliado de forma justa.
-=== "Saída"
-
-    ```python exec="on" 
-    --8<-- "docs/arvore-decisao/Etapa3.py"
-    ```
-
-=== "Código"
-
-    ```python
-    --8<-- "docs/arvore-decisao/Etapa3.py"
-    ```
-
-
-
-# Etapa 4
-## Treinamento do modelo
-O modelo de Árvore de Decisão foi treinado utilizando as variáveis mais relevantes do dataset:
-
-Features utilizadas: Injury type (Tipo de lesão), dia da semana, Primary factor (fator primário), ano, mês, dia, hora e latitude.
-Target:Collision Type (Tipo de colisão).
-
-=== "Saída"
-
-    ```python exec="on"
-    --8<-- "docs/arvore-decisao/Etapa4.py"
-    ```
-
-=== "Código"
-
-    ```python
-    --8<-- "docs/arvore-decisao/Etapa4.py"
-    ```         
-
-## Matriz de confusão 
-
-```python exec="on" html="1"
---8<-- "docs/arvore-decisao/Etapa4Matriz.py"
-```
-
-
-### Arvore de decisão
-
-```python exec="on" html="1"
---8<-- "docs/arvore-decisao/Etapa4arvore.py"
-```
-   
-O projeto cumpriu todas as etapas propostas: exploração, pré-processamento, divisão, treinamento, avaliação e documentação.
-O modelo de Árvore de Decisão mostrou-se eficiente para a tarefa de classificação do tipo de colisão
