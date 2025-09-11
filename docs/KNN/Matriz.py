@@ -7,10 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import seaborn as sns
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-
-
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
-
 ##########################################
 # Transformando Collision Type em numérico
 def collision_to_num(collision):
@@ -111,18 +108,10 @@ df['Primary Factor Num'] = df['Primary Factor'].apply(primary_factor_to_num)
 
 df = df.dropna()
 
-
 # Selecionar features para o modelo
 features = ['Year', 'Month', 'Day', 'Hour', 'Collision Type Num', 'Weekend Num', 'Primary Factor Num', 'Latitude', 'Longitude']
 X = df[features]
 y = df['Injury Type Num']  # Variável alvo: 1 para fatal, 0 para não fatal
-
-# Verificar balanceamento das classes
-print("Distribuição das classes:<br>")
-
-print(y.value_counts())
-print(f"<br>Proporção de acidentes fatais: {y.mean():.4f}<br>")
-
 # Dividir os dados em treino e teste
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -162,6 +151,23 @@ knn.fit(X_train_scaled, y_train)
 predictions = knn.predict(X_test_scaled)
 # Métricas de avaliação
 accuracy = accuracy_score(y_test, predictions)
-print(f"Acurácia do modelo: {accuracy:.4f}<br>")
-print("\nRelatório de Classificação:<br>")
-print(classification_report(y_test, predictions, target_names=['Não Fatal', 'Fatal']))
+
+cm = confusion_matrix(y_test, predictions)
+
+# Criar gráfico da matriz de confusão
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Não Fatal', 'Fatal'], 
+            yticklabels=['Não Fatal', 'Fatal'])
+plt.title('Matriz de Confusão - KNN')
+plt.ylabel('Verdadeiro')
+plt.xlabel('Previsto')
+
+# Salvar a figura em um buffer StringIO
+buffer = StringIO()
+plt.savefig(buffer, format="svg", transparent=True)
+plt.close()
+
+# Exibir o SVG da matriz de confusão
+print("<h3>Matriz de Confusão:</h3>")
+print(buffer.getvalue())

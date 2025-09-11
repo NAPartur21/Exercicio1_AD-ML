@@ -267,3 +267,32 @@ tipo de colisão, tipo de lesão, dia da semana e fator primário foram transfor
     ```
 Todos os registros com valores ausentes foram removidos, garantindo a integridade dos dados para o treinamento do modelo
 
+
+# Etapa 3 
+## Separação em treino e teste
+
+
+=== "Saída"
+
+    ```python exec="on" 
+    --8<-- "docs/KNN/Etapa3.py"
+    ```
+
+=== "Código"
+
+    ```python 
+    print("Tamanho do dataset antes da separação")
+    ```
+
+
+## Matriz
+
+```python exec="on" html="1"
+--8<-- "docs/KNN/Matriz.py"
+```
+
+## Fronteira
+
+```python exec="on" html="1"
+--8<-- "docs/KNN/fronteira.py"
+```

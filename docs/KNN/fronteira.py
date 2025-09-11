@@ -1,3 +1,10 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from io import StringIO
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 import pandas as pd
 from io import StringIO
@@ -6,6 +13,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import seaborn as sns
 import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+
 
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
 
@@ -104,13 +113,23 @@ def primary_factor_to_num(factor):
         return 0
 df['Primary Factor Num'] = df['Primary Factor'].apply(primary_factor_to_num)
 ##########################################
-
 #Limpeza
-
 df = df.dropna()
+# Selecionar features para o modelo
+features = ['Year', 'Month', 'Day', 'Hour', 'Collision Type Num', 'Weekend Num', 'Primary Factor Num', 'Latitude', 'Longitude']
+X = df[features]
+y = df['Injury Type Num']  # Variável alvo: 1 para fatal, 0 para não fatal
+# Verificar balanceamento das classes
+print(f"<br>Proporção de acidentes fatais: {y.mean():.4f}<br>")
+# Dividir os dados em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
+# Normalizar os dados
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# Implementação do KNN Classifier
+# Implementação do KNN
 class KNNClassifier:
     def __init__(self, k=3):
         self.k = k
@@ -124,144 +143,53 @@ class KNNClassifier:
         return np.array(predictions)
 
     def _predict(self, x):
-        # Compute Euclidean distances
+        # Calcular distâncias euclidianas
         distances = [np.sqrt(np.sum((x - x_train)**2)) for x_train in self.X_train]
-        # Get indices of k-nearest neighbors
+        # Obter índices dos k-vizinhos mais próximos
         k_indices = np.argsort(distances)[:self.k]
-        # Get corresponding labels
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
-        # Return majority class
+        # Obter os rótulos correspondentes
+        k_nearest_labels = [self.y_train.iloc[i] for i in k_indices]
+        # Retornar a classe majoritária
         most_common = max(set(k_nearest_labels), key=k_nearest_labels.count)
         return most_common
 
-# Preparação dos dados para o KNN
-# Selecionando features relevantes
-features = ['Year', 'Month', 'Day', 'Hour', 'Latitude', 'Longitude', 
-            'Collision Type Num', 'Weekend Num', 'Primary Factor Num']
-target = 'Injury Type Num'
+# Treinar e avaliar o modelo
 
-X = df[features].values
-y = df[target].values
-
-# Normalização dos dados
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-
-# Divisão treino-teste
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
-
-# Treinamento e previsão com KNN personalizado
-knn = KNNClassifier(k=5)
-knn.fit(X_train, y_train)
-predictions = knn.predict(X_test)
-
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train_scaled, y_train)
+predictions = knn.predict(X_test_scaled)
 # Métricas de avaliação
 accuracy = accuracy_score(y_test, predictions)
-print(f"Acurácia do KNN personalizado: {accuracy:.4f}")
-print("\nRelatório de Classificação:")
-print(classification_report(y_test, predictions))
-print("\nMatriz de Confusão:")
-print(confusion_matrix(y_test, predictions))
 
-# Visualização da matriz de confusão
-plt.figure(figsize=(8, 6))
-cm = confusion_matrix(y_test, predictions)
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-plt.title('Matriz de Confusão - KNN')
-plt.ylabel('Verdadeiro')
-plt.xlabel('Predito')
+plt.figure(figsize=(12, 10))
 
-buffer = StringIO()
-plt.savefig(buffer, format="svg", transparent=True)
-print(buffer.getvalue())
-plt.close()
+# Gerar dataset sintético
+X, y = make_classification(n_samples=100, n_features=2, n_informative=2, n_redundant=0, n_classes=2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Gráfico de importância das features (baseado na correlação)
-plt.figure(figsize=(10, 6))
-correlations = df[features + [target]].corr()[target].drop(target)
-correlations.sort_values().plot(kind='barh')
-plt.title('Correlação das Features com Injury Type')
-plt.xlabel('Coeficiente de Correlação')
-plt.tight_layout()
+# Treinar modelo KNN
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
+predictions = knn.predict(X_test)
+print(f"Acurácia: {accuracy_score(y_test, predictions):.2f}")
 
-buffer = StringIO()
-plt.savefig(buffer, format="svg", transparent=True)
-print(buffer.getvalue())
-plt.close()
+# Visualizar fronteira de decisão
+h = 0.02
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
 
-# Teste com diferentes valores de K
-k_values = range(1, 15)
-accuracies = []
-
-for k in k_values:
-    knn_temp = KNNClassifier(k=k)
-    knn_temp.fit(X_train, y_train)
-    pred_temp = knn_temp.predict(X_test)
-    acc = accuracy_score(y_test, pred_temp)
-    accuracies.append(acc)
-
-# Gráfico de acurácia vs valor de K
-plt.figure(figsize=(10, 6))
-plt.plot(k_values, accuracies, marker='o', linestyle='-', color='b')
-plt.title('Acurácia vs Valor de K')
-plt.xlabel('Valor de K')
-plt.ylabel('Acurácia')
-plt.grid(True)
-plt.xticks(k_values)
-plt.tight_layout()
+plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
+for label in np.unique(y):
+    plt.scatter(X[y == label, 0], X[y == label, 1], label=f"Classe {label}", s=100)
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Fronteira de Decisão KNN (k=3)")
+plt.legend()
 
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=True)
-print(buffer.getvalue())
 plt.close()
-
-# Comparação com sklearn KNN
-from sklearn.neighbors import KNeighborsClassifier
-
-sklearn_knn = KNeighborsClassifier(n_neighbors=5)
-sklearn_knn.fit(X_train, y_train)
-sklearn_pred = sklearn_knn.predict(X_test)
-sklearn_accuracy = accuracy_score(y_test, sklearn_pred)
-
-print(f"\nComparação com sklearn:")
-print(f"Acurácia KNN personalizado: {accuracy:.4f}")
-print(f"Acurácia sklearn KNN: {sklearn_accuracy:.4f}")
-
-# Análise de distribuição das classes
-plt.figure(figsize=(8, 6))
-df[target].value_counts().plot(kind='bar')
-plt.title('Distribuição das Classes (Injury Type)')
-plt.xlabel('Tipo de Lesão (0=Não Fatal, 1=Fatal)')
-plt.ylabel('Frequência')
-plt.xticks(rotation=0)
-
-buffer = StringIO()
-plt.savefig(buffer, format="svg", transparent=True)
 print(buffer.getvalue())
-plt.close()
-
-# Gráfico adicional: Distribuição dos tipos de colisão
-plt.figure(figsize=(10, 6))
-df['Collision Type Num'].value_counts().sort_index().plot(kind='bar')
-plt.title('Distribuição dos Tipos de Colisão')
-plt.xlabel('Tipo de Colisão')
-plt.ylabel('Frequência')
-plt.xticks(rotation=45)
-
-buffer = StringIO()
-plt.savefig(buffer, format="svg", transparent=True)
-print(buffer.getvalue())
-plt.close()
-
-# Gráfico adicional: Distribuição dos fatores primários
-plt.figure(figsize=(12, 6))
-df['Primary Factor Num'].value_counts().sort_index().plot(kind='bar')
-plt.title('Distribuição dos Fatores Primários')
-plt.xlabel('Categoria do Fator Primário')
-plt.ylabel('Frequência')
-plt.xticks(rotation=45)
-
-buffer = StringIO()
-plt.savefig(buffer, format="svg", transparent=True)
-print(buffer.getvalue())
-plt.close()
