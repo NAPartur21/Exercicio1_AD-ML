@@ -1,5 +1,9 @@
 # Exercicio 1 Arvore de decisao 
+<<<<<<< HEAD
 Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados limpá-la, e no final construir um modelo de árvore de decisão
+=======
+Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents) do Kaggle. O objetivo é analisar a base de dados limpá la e no final construir um modelo de árvore de decisão
+>>>>>>> parent of d6df4b1 (Update main.md)
 
 
 # Etapa 1 - Analise e instalação dos dados
@@ -58,7 +62,7 @@ O dataset possui 53943 linha e 11 colunas.
         for col in df:
         print(col, ":", df[col].dtype, "\n")
     ``` 
-o object é string, int64 é inteiro e float64 é float
+
 ### Estatisticas descritivas dos numéricos
 
 
