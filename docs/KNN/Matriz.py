@@ -1,12 +1,12 @@
+import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 from io import StringIO
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import seaborn as sns
-import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
+
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
 ##########################################
 # Transformando Collision Type em numérico
@@ -154,20 +154,22 @@ accuracy = accuracy_score(y_test, predictions)
 
 cm = confusion_matrix(y_test, predictions)
 
-# Criar gráfico da matriz de confusão
-plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
-            xticklabels=['Não Fatal', 'Fatal'], 
-            yticklabels=['Não Fatal', 'Fatal'])
-plt.title('Matriz de Confusão - KNN')
-plt.ylabel('Verdadeiro')
-plt.xlabel('Previsto')
+plt.figure(figsize=(6, 5))
+plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+plt.title('Matriz de Confusão')
+plt.colorbar()
+tick_marks = range(len(cm))
+plt.xticks(tick_marks, ['Não Fatal', 'Fatal'])
+plt.yticks(tick_marks, ['Não Fatal', 'Fatal'])
+plt.xlabel('Predito')
+plt.ylabel('Real')
 
-# Salvar a figura em um buffer StringIO
+for i in range(cm.shape[0]):
+    for j in range(cm.shape[1]):
+        plt.text(j, i, str(cm[i, j]), ha='center', va='center', color='black')
+
+plt.tight_layout()
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=True)
 plt.close()
-
-# Exibir o SVG da matriz de confusão
-print("<h3>Matriz de Confusão:</h3>")
 print(buffer.getvalue())

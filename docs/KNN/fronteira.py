@@ -1,20 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from io import StringIO
+import pandas as pd
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
-import pandas as pd
-from io import StringIO
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import seaborn as sns
-import numpy as np
-from sklearn.neighbors import KNeighborsClassifier
-
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
 
@@ -184,9 +176,9 @@ Z = Z.reshape(xx.shape)
 plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
 for label in np.unique(y):
     plt.scatter(X[y == label, 0], X[y == label, 1], label=f"Classe {label}", s=100)
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("Fronteira de Decisão KNN (k=3)")
+plt.xlabel("Chance de acidente fatal")
+plt.ylabel("Chance de acidente não fatal")
+plt.title("Fronteira de Decisão KNN ")
 plt.legend()
 
 buffer = StringIO()

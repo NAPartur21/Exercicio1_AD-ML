@@ -1,13 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from io import StringIO
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import seaborn as sns
-import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-
 
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
 

@@ -31,15 +31,17 @@ O dataset possui 53943 linha e 11 colunas.
 
 ## As bibiliotecas utilizadas
 ```python 
-    import matplotlib.pyplot as plt
+    import numpy as np
     import pandas as pd
-    from io import StringIO, BytesIO
-    from sklearn.model_selection import train_test_split
-    from sklearn.tree import DecisionTreeClassifier, plot_tree
-    from sklearn.metrics import confusion_matrix, accuracy_score
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import tree
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from io import StringIO
 
+    from sklearn.datasets import make_classification
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.model_selection import train_test_split
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 ``` 
 
 ### Explicação dos tipos de dados 
