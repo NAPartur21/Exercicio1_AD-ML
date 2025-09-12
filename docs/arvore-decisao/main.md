@@ -307,6 +307,8 @@ Target:Collision Type (Tipo de colisão).
     --8<-- "docs/arvore-decisao/Etapa4.py"
     ```         
 
+## Matriz de confusão 
+
 ```python exec="on" html="1"
 --8<-- "docs/arvore-decisao/Etapa4Matriz.py"
 ```
