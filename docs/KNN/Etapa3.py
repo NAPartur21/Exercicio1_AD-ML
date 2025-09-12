@@ -9,6 +9,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
 
+
 ##########################################
 # Transformando Collision Type em numérico
 def collision_to_num(collision):
