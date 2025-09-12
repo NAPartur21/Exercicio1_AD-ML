@@ -17,4 +17,3 @@ yfinance
 kagglehub
 scikit-learn
 openpyxl
-tabulate
