@@ -135,6 +135,7 @@ nav:
   - Home: index.md
   - Atividades:
     - Arvore de Decisão: ./arvore-decisao/main.md
+    - KNN: ./KNN/main.md
   - Roteiros:
     - Roteiro 1: ./roteiro1/main.md
     - Roteiro 2: ./roteiro2/main.md
