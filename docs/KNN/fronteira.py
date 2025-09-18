@@ -184,8 +184,4 @@ plt.legend()
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=True)
 plt.close()
-<<<<<<< HEAD
-
-=======
->>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
 print(buffer.getvalue())
