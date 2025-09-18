@@ -136,7 +136,10 @@ nav:
   - Atividades:
     - Arvore de Decisão: ./arvore-decisao/main.md
     - KNN: ./KNN/main.md
+<<<<<<< HEAD
     - K-means: ./K-means/main.md
+=======
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
   - Roteiros:
     - Roteiro 1: ./roteiro1/main.md
     - Roteiro 2: ./roteiro2/main.md

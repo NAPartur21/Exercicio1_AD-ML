@@ -61,11 +61,14 @@ O dataset possui 53943 linha e 11 colunas.
         print(col, ":", df[col].dtype, "\n")
     ``` 
 
+<<<<<<< HEAD
 !!! tip "Explicação"
 
     Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
     Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
     FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
+=======
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
 
 ### Estatisticas descritivas dos numéricos
 
@@ -276,7 +279,11 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
 
 
 # Etapa 3 
+<<<<<<< HEAD
 ## Separação em treino e teste / KNN
+=======
+## Separação em treino e teste
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
 
 
 === "Saída"
@@ -288,6 +295,7 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
 === "Código"
 
     ```python 
+<<<<<<< HEAD
         # Selecionar features para o modelo
         features = ['Year', 'Month', 'Day', 'Hour', 'Collision Type Num', 'Weekend Num', 'Primary Factor Num', 'Latitude', 'Longitude']
         X = df[features]
@@ -338,11 +346,15 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
         predictions = knn.predict(X_test_scaled)
         # Métricas de avaliação
         accuracy = accuracy_score(y_test, predictions)
+=======
+    print("Tamanho do dataset antes da separação")
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
     ```
 
 
 ## Matriz
 
+<<<<<<< HEAD
 === "Saída"
 
     ```python 
@@ -405,3 +417,14 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
 
     print(buffer.getvalue())
     ```
+=======
+```python exec="on" html="1"
+--8<-- "docs/KNN/Matriz.py"
+```
+
+## Fronteira
+
+```python exec="on" html="1"
+--8<-- "docs/KNN/fronteira.py"
+```
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22

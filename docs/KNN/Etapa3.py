@@ -8,6 +8,11 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.neighbors import KNeighborsClassifier
 
 df = pd.read_excel("docs/arvore-decisao/crashcar.xlsx")
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
 ##########################################
 # Transformando Collision Type em numérico
 def collision_to_num(collision):
@@ -112,7 +117,11 @@ df = df.dropna()
 # Selecionar features para o modelo
 features = ['Year', 'Month', 'Day', 'Hour', 'Collision Type Num', 'Weekend Num', 'Primary Factor Num', 'Latitude', 'Longitude']
 X = df[features]
+<<<<<<< HEAD
 y = df['Injury Type Num']  
+=======
+y = df['Injury Type Num']  # Variável alvo: 1 para fatal, 0 para não fatal
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
 
 # Verificar balanceamento das classes
 print("Distribuição das classes:<br>")
@@ -161,4 +170,8 @@ predictions = knn.predict(X_test_scaled)
 accuracy = accuracy_score(y_test, predictions)
 print(f"Acurácia do modelo: {accuracy:.4f}<br>")
 print("\nRelatório de Classificação:<br>")
+<<<<<<< HEAD
 print(classification_report(y_test, predictions, target_names=['Não Fatal', 'Fatal']))
+=======
+print(classification_report(y_test, predictions, target_names=['Não Fatal', 'Fatal']))
+>>>>>>> e23320978d39b2b29198540b01bd85c78545cd22
