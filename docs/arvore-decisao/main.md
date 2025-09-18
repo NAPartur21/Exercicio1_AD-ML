@@ -57,9 +57,12 @@ O dataset possui 53943 linha e 11 colunas.
         for col in df:
         print(col, ":", df[col].dtype, "\n")
     ``` 
-Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
-Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
-FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
+
+!!! tip "Explicação"
+
+    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
+    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
+    FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
 
 ### Estatisticas descritivas dos numéricos
 
