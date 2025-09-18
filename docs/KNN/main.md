@@ -1,5 +1,6 @@
-# Exercicio 1 Arvore de decisao 
-Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados limpá-la, e no final construir um modelo de árvore de decisão
+# Exercicio 2 KNN 
+Esse exercicio é baseado no dataset [Crash Car](https://www.kaggle.com/datasets/jacksondivakarr/car-crash-dataset) do Kaggle. O objetivo é analisar a base de dados, limpá-la e no final construir um modelo KNN
+
 
 # Etapa 1 - Analise e instalação dos dados
 O dataset foi carregado a partir de um arquivo Excel, contendo informações como tipo de colisão, tipo de lesão, dia da semana, fatores primários do acidente, data, hora e localização.
@@ -30,15 +31,17 @@ O dataset possui 53943 linha e 11 colunas.
 
 ## As bibiliotecas utilizadas
 ```python 
-    import matplotlib.pyplot as plt
+    import numpy as np
     import pandas as pd
-    from io import StringIO, BytesIO
-    from sklearn.model_selection import train_test_split
-    from sklearn.tree import DecisionTreeClassifier, plot_tree
-    from sklearn.metrics import confusion_matrix, accuracy_score
-    from sklearn.preprocessing import StandardScaler
-    from sklearn import tree
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from io import StringIO
 
+    from sklearn.datasets import make_classification
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.model_selection import train_test_split
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 ``` 
 
 ### Explicação dos tipos de dados 
@@ -57,9 +60,12 @@ O dataset possui 53943 linha e 11 colunas.
         for col in df:
         print(col, ":", df[col].dtype, "\n")
     ``` 
-Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
-Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
-FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
+
+!!! tip "Explicação"
+
+    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
+    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
+    FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
 
 ### Estatisticas descritivas dos numéricos
 
@@ -270,74 +276,132 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
 
 
 # Etapa 3 
-## Separação em treino e teste / Arvore de Decisão
+## Separação em treino e teste / KNN
 
-Os dados foram divididos em conjuntos de treino 80% e teste 20% de forma estratificada, preservando a proporção das classes.
-A distribuição das classes foi feita para ambos os conjuntos garantindo que o modelo fosse treinado e avaliado de forma justa.
+
 === "Saída"
 
     ```python exec="on" 
-    --8<-- "docs/arvore-decisao/Etapa3.py"
+    --8<-- "docs/KNN/Etapa3.py"
     ```
 
 === "Código"
 
-    ```python
-    --8<-- "docs/arvore-decisao/Etapa3.py"
+    ```python 
+        # Selecionar features para o modelo
+        features = ['Year', 'Month', 'Day', 'Hour', 'Collision Type Num', 'Weekend Num', 'Primary Factor Num', 'Latitude', 'Longitude']
+        X = df[features]
+        y = df['Injury Type Num']  # Variável alvo: 1 para fatal, 0 para não fatal
+
+        # Verificar balanceamento das classes
+        print("Distribuição das classes:<br>")
+
+        print(y.value_counts())
+        print(f"<br>Proporção de acidentes fatais: {y.mean():.4f}<br>")
+
+        # Dividir os dados em treino e teste
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+        # Normalizar os dados
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+
+        # Implementação do KNN
+        class KNNClassifier:
+            def __init__(self, k=3):
+                self.k = k
+
+            def fit(self, X, y):
+                self.X_train = X
+                self.y_train = y
+
+            def predict(self, X):
+                predictions = [self._predict(x) for x in X]
+                return np.array(predictions)
+
+            def _predict(self, x):
+                # Calcular distâncias euclidianas
+                distances = [np.sqrt(np.sum((x - x_train)**2)) for x_train in self.X_train]
+                # Obter índices dos k-vizinhos mais próximos
+                k_indices = np.argsort(distances)[:self.k]
+                # Obter os rótulos correspondentes
+                k_nearest_labels = [self.y_train.iloc[i] for i in k_indices]
+                # Retornar a classe majoritária
+                most_common = max(set(k_nearest_labels), key=k_nearest_labels.count)
+                return most_common
+
+        # Treinar e avaliar o modelo
+
+        knn = KNeighborsClassifier(n_neighbors=5)
+        knn.fit(X_train_scaled, y_train)
+        predictions = knn.predict(X_test_scaled)
+        # Métricas de avaliação
+        accuracy = accuracy_score(y_test, predictions)
     ```
 
 
-
-# Etapa 4
-## Treinamento do modelo
-O modelo de Árvore de Decisão foi treinado utilizando as variáveis mais relevantes do dataset:
-
-Features utilizadas: Injury type (Tipo de lesão), dia da semana, Primary factor (fator primário), ano, mês, dia, hora e latitude.
-Target:Collision Type (Tipo de colisão).
+## Matriz
 
 === "Saída"
 
-    ```python exec="on"
-    --8<-- "docs/arvore-decisao/Etapa4.py"
+    ```python 
+    plt.figure(figsize=(6, 5))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('Matriz de Confusão')
+    plt.colorbar()
+    tick_marks = range(len(cm))
+    plt.xticks(tick_marks, ['Não Fatal', 'Fatal'])
+    plt.yticks(tick_marks, ['Não Fatal', 'Fatal'])
+    plt.xlabel('Predito')
+    plt.ylabel('Real')
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(j, i, str(cm[i, j]), ha='center', va='center', color='black')
+
+    plt.tight_layout()
+    buffer = StringIO()
+    plt.savefig(buffer, format="svg", transparent=True)
+    plt.close()
+    print(buffer.getvalue())
     ```
 
 === "Código"
 
-    ```python
-    --8<-- "docs/arvore-decisao/Etapa4.py"
-    ```         
+    ```python exec="on" html="1"
+    --8<-- "docs/KNN/Matriz.py"
+    ```
 
-### Arvore de decisão
-
+## Grafico de Fronteira
 
 === "Saída"
 
     ```python exec="on" html="1"
-    --8<-- "docs/arvore-decisao/Etapa4arvore.py"
+    --8<-- "docs/KNN/fronteira.py"
     ```
-    
 === "Código"
 
     ```python 
-    # ==========================
-    #Visualização da árvore em SVG
-    # ==========================
-    plt.figure(figsize=(18,10), dpi=150)
-    tree.plot_tree(
-        clf,
-        feature_names=features,
-        class_names=[str(c) for c in clf.classes_],
-        filled=True,
-        rounded=True,
-        fontsize=10
-    )
-    buffer = BytesIO()
-    plt.savefig(buffer, format="svg", transparent=False)
-    svg_data = buffer.getvalue().decode("utf-8")
-    print(svg_data)
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f"<br>Acurácia do modelo: {accuracy:.4f}")
+    # Visualizar fronteira de decisão
+    h = 0.02
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
+    for label in np.unique(y):
+        plt.scatter(X[y == label, 0], X[y == label, 1], label=f"Classe {label}", s=100)
+    plt.xlabel("Chance de acidente fatal")
+    plt.ylabel("Chance de acidente não fatal")
+    plt.title("Fronteira de Decisão KNN ")
+    plt.legend()
+
+    buffer = StringIO()
+    plt.savefig(buffer, format="svg", transparent=True)
+    plt.close()
+
+    print(buffer.getvalue())
     ```
-   
-O projeto cumpriu todas as etapas propostas: exploração, pré-processamento, divisão, treinamento, avaliação e documentação.
-O modelo de Árvore de Decisão mostrou-se eficiente para a tarefa de classificação do tipo de colisão

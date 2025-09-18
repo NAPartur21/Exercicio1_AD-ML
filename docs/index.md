@@ -1,13 +1,13 @@
-# Entregável ML
+# Explorando Machine Learning na prática
 
 
-???+ info inline end "Edição"
+???+ info inline end "Curso"
 
-    2025.1
+    2025.2 Ciência de dados 
 
 
 ## Nome
-- Artur Napoles
+- Artur Napoles de Oliveira
 
 
 
@@ -18,9 +18,9 @@
 
 ## Entregas
 
-- [x] Roteiro 1 - Data 23/02/2025
-- [ ] Roteiro 2
-- [ ] Roteiro 3
+- [x] Árvore de Decisão - Data 31/08/2025
+- [x] KNN - Data 14/09/2025
+- [x] K-means - Data 19/09/2025
 - [ ] Roteiro 4
 - [ ] Projeto
 
