@@ -169,7 +169,4 @@ plt.savefig(buffer, format="svg", transparent=False)
 plt.close()
 print(buffer.getvalue())
 
-# Infos adicionais
-print("Final centroids (em escala original):")
-print(centroids)
-print("Inertia (WCSS):", kmeans.inertia_)
+

@@ -60,12 +60,11 @@ O dataset possui 53943 linha e 11 colunas.
 
 !!! tip "Explicação"
 
-    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
-    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
+    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.<br>
+    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.<br>
     FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
 
 ### Estatisticas descritivas dos numéricos
-
 
 === "Saída"
 

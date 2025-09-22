@@ -63,8 +63,8 @@ O dataset possui 53943 linha e 11 colunas.
 
 !!! tip "Explicação"
 
-    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.
-    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.
+    Int64: Dados numéricos inteiros, como Year, Month, Day, Hour e Latitude.<br>
+    Object: Dados categóricos ou textuais, como Collision Type, Injury Type, Weekend?, Primary Factor e Time.<br>
     FLoat64: Dados numéricos com casas decimais, como Longitude, Latitude e Hora.
 
 
@@ -286,6 +286,19 @@ Todos os registros com valores ausentes foram removidos, garantindo a integridad
     --8<-- "docs/K-means/Etapa3.py"
     ```
 
+=== "Código"
+
+    ```python
+    ##########################################
+    # Aplicando o modelo K-Means
+
+    # Definindo número de clusters (ex: 3, mas pode ajustar)
+    kmeans = KMeans(n_clusters=3, init='k-means++', random_state=42, n_init=10)
+    kmeans.fit(X_scaled)
+
+    # Atribui os clusters ao dataframe
+    df['Cluster'] = kmeans.labels_
+    ```
 
 ## Grafico simples
 

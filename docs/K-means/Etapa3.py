@@ -131,7 +131,7 @@ df['Cluster'] = kmeans.labels_
 ##########################################
 # Saída de resultados
 
-print("Centroides dos clusters (em escala padronizada):")
+print("Centroides dos clusters (em escala padronizada):<br>")
 print(kmeans.cluster_centers_)
 
 print("\nQuantidade de registros por cluster:")
