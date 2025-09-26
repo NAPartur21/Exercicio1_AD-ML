@@ -137,6 +137,7 @@ nav:
       - Arvore de Decisão: ./arvore-decisao/main.md
       - KNN: ./KNN/main.md
       - K-means: ./K-means/main.md
+      - Metrics: ./Metrics/main.md
   - Roteiros:
       - Roteiro 1: ./roteiro1/main.md
       - Roteiro 2: ./roteiro2/main.md
